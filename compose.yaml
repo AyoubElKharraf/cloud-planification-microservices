@@ -1,0 +1,45 @@
+# Projet 2 — Phase 2 : Orchestration maître des microservices UMP Oujda
+# Usage : docker compose up --build -d
+# Réseau partagé : planification-net
+
+include:
+  - path: ./service-catalogue/compose.yaml
+  - path: ./service-locaux/compose.yaml
+  - path: ./service-emploi-du-temps/compose.yaml
+
+services:
+  service-catalogue:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/cours"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  service-locaux:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/locaux"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  service-emploi-du-temps:
+    depends_on:
+      emploi-db:
+        condition: service_healthy
+      service-catalogue:
+        condition: service_healthy
+      service-locaux:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/emploi-du-temps"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+networks:
+  planification-net:
+    name: planification-net
+    driver: bridge

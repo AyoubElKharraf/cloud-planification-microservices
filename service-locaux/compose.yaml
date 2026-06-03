@@ -1,0 +1,51 @@
+services:
+  locaux-db:
+    image: mysql:8.0
+    container_name: locaux-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: locaux_db
+      MYSQL_USER: locaux_user
+      MYSQL_PASSWORD: locaux_pass
+    volumes:
+      - locaux-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - planification-net
+
+  service-locaux:
+    build: .
+    container_name: service-locaux
+    ports:
+      - "8082:8080"
+    environment:
+      DATASOURCE_NAME: LocauxDS
+      DB_HOST: locaux-db
+      DB_PORT: "3306"
+      DB_NAME: locaux_db
+      DB_USER: locaux_user
+      DB_PASSWORD: locaux_pass
+    depends_on:
+      locaux-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/locaux"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    networks:
+      - planification-net
+
+volumes:
+  locaux-data:
+
+networks:
+  planification-net:
+    external: true

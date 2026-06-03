@@ -1,0 +1,395 @@
+{
+  "info": {
+    "_postman_id": "projet2-planification-ump-oujda",
+    "name": "Projet 2 - Planification & Logistique (UMP Oujda)",
+    "description": "Collection Postman pour les microservices Catalogue, Locaux et Emploi du Temps.\nUniversité Mohammed Premier — Oujda, Maroc.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "catalogue_base",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "locaux_base",
+      "value": "http://localhost:8082"
+    },
+    {
+      "key": "emploi_base",
+      "value": "http://localhost:8083"
+    }
+  ],
+  "item": [
+    {
+      "name": "Folder 1 — Catalogue Cours (port 8081)",
+      "item": [
+        {
+          "name": "GET — Liste tous les cours",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{catalogue_base}}/api/cours",
+              "host": ["{{catalogue_base}}"],
+              "path": ["api", "cours"]
+            },
+            "description": "Retourne la liste de tous les cours du catalogue."
+          },
+          "response": []
+        },
+        {
+          "name": "GET — Cours par id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{catalogue_base}}/api/cours/1",
+              "host": ["{{catalogue_base}}"],
+              "path": ["api", "cours", "1"]
+            },
+            "description": "Recherche un cours par identifiant."
+          },
+          "response": []
+        },
+        {
+          "name": "GET — Cours par code INF301",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{catalogue_base}}/api/cours/code/INF301",
+              "host": ["{{catalogue_base}}"],
+              "path": ["api", "cours", "code", "INF301"]
+            },
+            "description": "Recherche un cours par code unique."
+          },
+          "response": []
+        },
+        {
+          "name": "POST — Créer un cours",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"INF401\",\n  \"intitule\": \"DevOps\",\n  \"credits\": 4\n}"
+            },
+            "url": {
+              "raw": "{{catalogue_base}}/api/cours",
+              "host": ["{{catalogue_base}}"],
+              "path": ["api", "cours"]
+            },
+            "description": "Crée un nouveau cours. Réponse attendue : HTTP 201."
+          },
+          "response": []
+        },
+        {
+          "name": "PUT — Mettre à jour un cours",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"INF301\",\n  \"intitule\": \"Cloud Computing (mis à jour)\",\n  \"syllabus\": \"Syllabus mis à jour\",\n  \"prerequis\": \"INF201, INF202\",\n  \"credits\": 6\n}"
+            },
+            "url": {
+              "raw": "{{catalogue_base}}/api/cours/1",
+              "host": ["{{catalogue_base}}"],
+              "path": ["api", "cours", "1"]
+            },
+            "description": "Met à jour un cours existant par identifiant."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE — Supprimer un cours",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{catalogue_base}}/api/cours/1",
+              "host": ["{{catalogue_base}}"],
+              "path": ["api", "cours", "1"]
+            },
+            "description": "Supprime un cours par identifiant. Réponse attendue : HTTP 204."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Folder 2 — Locaux (port 8082)",
+      "item": [
+        {
+          "name": "GET — Liste tous les locaux",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{locaux_base}}/api/locaux",
+              "host": ["{{locaux_base}}"],
+              "path": ["api", "locaux"]
+            },
+            "description": "Retourne la liste de tous les locaux."
+          },
+          "response": []
+        },
+        {
+          "name": "GET — Locaux disponibles (capaciteMin=30)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{locaux_base}}/api/locaux/disponibles?capaciteMin=30",
+              "host": ["{{locaux_base}}"],
+              "path": ["api", "locaux", "disponibles"],
+              "query": [
+                {
+                  "key": "capaciteMin",
+                  "value": "30"
+                }
+              ]
+            },
+            "description": "Liste les locaux DISPONIBLE avec capacité minimale."
+          },
+          "response": []
+        },
+        {
+          "name": "GET — Locaux par type AMPHI",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{locaux_base}}/api/locaux/type/AMPHI",
+              "host": ["{{locaux_base}}"],
+              "path": ["api", "locaux", "type", "AMPHI"]
+            },
+            "description": "Filtre les locaux par type (AMPHI, SALLE_TP, SALLE_COURS, LABO)."
+          },
+          "response": []
+        },
+        {
+          "name": "POST — Créer un local",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"TP-04\",\n  \"nom\": \"Salle TP 04\",\n  \"type\": \"SALLE_TP\",\n  \"capacite\": 30,\n  \"batiment\": \"Bloc Informatique\",\n  \"etage\": 2,\n  \"projecteur\": true,\n  \"tableauNumerique\": true,\n  \"climatisation\": true,\n  \"accessiblePMR\": false,\n  \"disponibilite\": \"DISPONIBLE\"\n}"
+            },
+            "url": {
+              "raw": "{{locaux_base}}/api/locaux",
+              "host": ["{{locaux_base}}"],
+              "path": ["api", "locaux"]
+            },
+            "description": "Crée un nouveau local. Réponse attendue : HTTP 201."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH — Mettre disponibilité OCCUPE",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{locaux_base}}/api/locaux/1/disponibilite?valeur=OCCUPE",
+              "host": ["{{locaux_base}}"],
+              "path": ["api", "locaux", "1", "disponibilite"],
+              "query": [
+                {
+                  "key": "valeur",
+                  "value": "OCCUPE"
+                }
+              ]
+            },
+            "description": "Met à jour la disponibilité d'un local (DISPONIBLE, OCCUPE, EN_MAINTENANCE)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Folder 3 — Emploi du Temps (port 8083)",
+      "item": [
+        {
+          "name": "GET — Liste toutes les séances",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{emploi_base}}/api/emploi-du-temps",
+              "host": ["{{emploi_base}}"],
+              "path": ["api", "emploi-du-temps"]
+            },
+            "description": "Retourne toutes les séances planifiées."
+          },
+          "response": []
+        },
+        {
+          "name": "GET — Séances par jour LUNDI",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{emploi_base}}/api/emploi-du-temps/jour/LUNDI",
+              "host": ["{{emploi_base}}"],
+              "path": ["api", "emploi-du-temps", "jour", "LUNDI"]
+            },
+            "description": "Liste les séances pour un jour de la semaine."
+          },
+          "response": []
+        },
+        {
+          "name": "POST — Planifier une séance",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"coursId\": 1,\n  \"localId\": 1,\n  \"jour\": \"LUNDI\",\n  \"heureDebut\": \"08:30\",\n  \"heureFin\": \"10:30\",\n  \"semestre\": \"S2-2025\",\n  \"type\": \"COURS_MAGISTRAL\"\n}"
+            },
+            "url": {
+              "raw": "{{emploi_base}}/api/emploi-du-temps",
+              "host": ["{{emploi_base}}"],
+              "path": ["api", "emploi-du-temps"]
+            },
+            "description": "Planifie une séance (vérifie cours, salle disponible, conflits). Réponse attendue : HTTP 201."
+          },
+          "response": []
+        },
+        {
+          "name": "POST — Conflit horaire (attendu 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"coursId\": 2,\n  \"localId\": 1,\n  \"jour\": \"LUNDI\",\n  \"heureDebut\": \"09:00\",\n  \"heureFin\": \"11:00\",\n  \"semestre\": \"S2-2025\",\n  \"type\": \"TD\"\n}"
+            },
+            "url": {
+              "raw": "{{emploi_base}}/api/emploi-du-temps",
+              "host": ["{{emploi_base}}"],
+              "path": ["api", "emploi-du-temps"]
+            },
+            "description": "Tente de planifier sur le même créneau/salle — doit retourner HTTP 409 Conflict."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE — Supprimer une séance",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{emploi_base}}/api/emploi-du-temps/1",
+              "host": ["{{emploi_base}}"],
+              "path": ["api", "emploi-du-temps", "1"]
+            },
+            "description": "Supprime une séance et libère la salle. Réponse attendue : HTTP 204."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+services:
+  catalogue-db:
+    image: mysql:8.0
+    container_name: catalogue-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: catalogue_db
+      MYSQL_USER: catalogue_user
+      MYSQL_PASSWORD: catalogue_pass
+    volumes:
+      - catalogue-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - planification-net
+
+  service-catalogue:
+    build: .
+    container_name: service-catalogue
+    ports:
+      - "8081:8080"
+    environment:
+      DATASOURCE_NAME: CatalogueDS
+      DB_HOST: catalogue-db
+      DB_PORT: "3306"
+      DB_NAME: catalogue_db
+      DB_USER: catalogue_user
+      DB_PASSWORD: catalogue_pass
+    depends_on:
+      catalogue-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/cours"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    networks:
+      - planification-net
+
+volumes:
+  catalogue-data:
+
+networks:
+  planification-net:
+    external: true
